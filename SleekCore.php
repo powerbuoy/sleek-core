@@ -1,4 +1,6 @@
 <?php
+namespace Sleek;
+
 ###################
 # Title tag support
 add_theme_support('title-tag');
@@ -44,4 +46,17 @@ add_filter('wp_mail_from_name', 'sleek_email_from_name');
 
 function sleek_email_from_name () {
 	return get_bloginfo('name');
+}
+
+######################
+# 404 attachment pages
+add_filter('template_redirect', 'sleek_404_attachments');
+
+function sleek_404_attachments () {
+	global $wp_query;
+
+	if (is_attachment()) {
+		status_header(404); # Sets 404 header
+		$wp_query->set_404(); # Shows 404 template
+	}
 }
