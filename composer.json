@@ -1,0 +1,14 @@
+{
+    "name": "powerbuoy/sleek-core",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "AL",
+            "email": "powerbuoy@gmail.com"
+        }
+    ],
+    "autoload": {
+        "files": ["SleekCore.php"]
+    },
+    "require": {}
+}
