@@ -50,14 +50,6 @@ add_filter('excerpt_more', function () {
 # Editor style
 add_editor_style();
 
-#########################################
-# Add the styleselect dropdown to TinyMCE
-add_filter('mce_buttons_2', function ($buttons) {
-	array_unshift($buttons, 'styleselect');
-
-	return $buttons;
-});
-
 #####################
 # Change email sender
 add_filter('wp_mail_from', function () {
