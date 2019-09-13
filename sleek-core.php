@@ -101,6 +101,19 @@ add_filter('navigation_markup_template', function ($template, $class) {
 #	return preg_replace('/<p>\s*(<iframe .*>*.<\/iframe>)\s*<\/p>/iU', '\1', $content);
 # });
 
+########################
+# Clean up widget output
+# NOTE: Not yet in WP-Core
+# https://core.trac.wordpress.org/ticket/48033
+add_filter('register_sidebar_defaults', function ($defaults) {
+	$defaults['before_widget'] = '<div id="widget-%1$s" class="%2$s">';
+	$defaults['after_widget'] = '</div>';
+	$defaults['before_title'] = '<h2>';
+	$defaults['after_title'] = '</h2>';
+
+	return $defaults;
+});
+
 #############################
 # Clean up wp_list_categories
 add_action('wp_list_categories', function ($output) {
