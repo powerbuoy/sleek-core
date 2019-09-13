@@ -12,17 +12,27 @@ add_action('wp_head', function () {
 # Theme support
 add_theme_support('title-tag');
 add_theme_support('post-thumbnails');
-add_theme_support('custom-logo', [
-	'header-text' => [get_bloginfo('name'), get_bloginfo('description')]
-]);
-
-##############
-# Editor style
-add_editor_style();
+add_theme_support('custom-logo');
 
 ###################
 # Disable Gutenberg
 add_filter('use_block_editor_for_post_type', '__return_false', 10);
+
+##################################
+# Show the editor on the blog page
+# NOTE: With gutenberg enabled this will still show the classic editor...
+# https://wordpress.stackexchange.com/questions/193755/show-default-editor-on-blog-page-administration-panel
+add_action('edit_form_after_title', function ($post) {
+	if ($post->ID === get_option('page_for_posts')) {
+		add_post_type_support('page', 'editor');
+	}
+}, 0);
+
+#####################
+# Give pages excerpts
+add_action('init', function () {
+	add_post_type_support('page', 'excerpt');
+});
 
 ################
 # Modify excerpt
@@ -34,11 +44,9 @@ add_filter('excerpt_more', function () {
 	return ' /../';
 });
 
-#####################
-# Give pages excerpts
-add_action('init', function () {
-	add_post_type_support('page', 'excerpt');
-});
+##############
+# Editor style
+add_editor_style();
 
 #########################################
 # Add the styleselect dropdown to TinyMCE
@@ -47,15 +55,6 @@ add_filter('mce_buttons_2', function ($buttons) {
 
 	return $buttons;
 });
-
-##################################
-# Show the editor on the blog page
-# https://wordpress.stackexchange.com/questions/193755/show-default-editor-on-blog-page-administration-panel
-add_action('edit_form_after_title', function ($post) {
-	if ($post->ID === get_option('page_for_posts')) {
-		add_post_type_support('page', 'editor');
-	}
-}, 0);
 
 #####################
 # Change email sender
