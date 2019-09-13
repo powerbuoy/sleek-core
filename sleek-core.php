@@ -149,3 +149,27 @@ add_filter('template_redirect', function () {
 		$wp_query->set_404(); # Shows 404 template
 	}
 });
+
+##########################
+# Remove self closing tags
+# NOTE: From Roots
+function remove_self_closing_tags ($input) {
+	return str_replace(' />', '>', $input);
+}
+
+add_filter('get_avatar', __NAMESPACE__ . '\\remove_self_closing_tags');
+add_filter('comment_id_fields', __NAMESPACE__ . '\\remove_self_closing_tags');
+add_filter('post_thumbnail_html', __NAMESPACE__ . '\\remove_self_closing_tags');
+
+##############
+# Cleanup head
+# http://wpengineer.com/1438/wordpress-header/
+add_action('init', function () {
+#	remove_action('wp_head', 'feed_links', 2);
+#	remove_action('wp_head', 'feed_links_extra', 3);
+#	remove_action('wp_head', 'rsd_link');
+#	remove_action('wp_head', 'wlwmanifest_link');
+#	remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+#	remove_action('wp_head', 'wp_generator');
+#	remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
+});
