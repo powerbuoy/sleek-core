@@ -1,9 +1,28 @@
 <?php
 namespace Sleek;
 
-###################
-# Title tag support
+######################
+# Charset and viewport
+add_action('wp_head', function () {
+	echo '<meta charset="' . get_bloginfo('charset') . '">';
+	echo '<meta name="viewport" content="' . apply_filters('sleek_meta_viewport', 'width=device-width, initial-scale=1.0') . '">';
+}, 0);
+
+###############
+# Theme support
 add_theme_support('title-tag');
+add_theme_support('post-thumbnails');
+add_theme_support('custom-logo', [
+	'header-text' => [get_bloginfo('name'), get_bloginfo('description')]
+]);
+
+##############
+# Editor style
+add_editor_style();
+
+###################
+# Disable Gutenberg
+add_filter('use_block_editor_for_post_type', '__return_false', 10);
 
 ################
 # Modify excerpt
@@ -21,9 +40,13 @@ add_action('init', function () {
 	add_post_type_support('page', 'excerpt');
 });
 
-###################
-# Disable Gutenberg
-add_filter('use_block_editor_for_post_type', '__return_false', 10);
+#########################################
+# Add the styleselect dropdown to TinyMCE
+add_filter('mce_buttons_2', function ($buttons) {
+	array_unshift($buttons, 'styleselect');
+
+	return $buttons;
+});
 
 ##################################
 # Show the editor on the blog page
@@ -36,17 +59,13 @@ add_action('edit_form_after_title', function ($post) {
 
 #####################
 # Change email sender
-add_filter('wp_mail_from', __NAMESPACE__ . '\\mail_from');
-
-function mail_from () {
+add_filter('wp_mail_from', function () {
 	return get_option('admin_email');
-}
+});
 
-add_filter('wp_mail_from_name', __NAMESPACE__ . '\\mail_from_name');
-
-function mail_from_name () {
+add_filter('wp_mail_from_name', function () {
 	return get_bloginfo('name');
-}
+});
 
 ################################################
 # Remove "Protected:" from protected post titles
@@ -57,6 +76,24 @@ add_filter('private_title_format', function () {
 add_filter('protected_title_format', function () {
 	return '%s';
 });
+
+#############################################
+# Add a no-js class to body and remove onload
+add_filter('body_class', function ($classes) {
+	$classes[] = 'no-js';
+
+	return $classes;
+});
+
+add_action('wp_head', function () {
+	echo "<script>document.documentElement.classList.replace('no-js', 'js');</script>";
+});
+
+##############################################################
+# Fix pagination output (Remove h2, wrapping div, classes etc)
+add_filter('navigation_markup_template', function ($template, $class) {
+	return '<nav id="pagination">%3$s</nav>';
+}, 10, 2);
 
 #####################################
 # Prevent WP wrapping iframe's in <p>
@@ -88,25 +125,21 @@ add_action('wp_list_categories', function ($output) {
 ##########################
 # Disable 404 URL guessing
 # https://core.trac.wordpress.org/ticket/16557
-add_filter('redirect_canonical', __NAMESPACE__ . '\\disable_404_guessing');
-
-function disable_404_guessing ($url) {
+add_filter('redirect_canonical', function ($url) {
 	if (is_404() and !isset($_GET['p'])) {
 		return false;
 	}
 
 	return $url;
-}
+});
 
-######################
-# 404 attachment pages
-add_filter('template_redirect', __NAMESPACE__ . '\\attachments404');
-
-function attachments404 () {
+##############################
+# 404 some pages or post-types
+add_filter('template_redirect', function () {
 	global $wp_query;
 
-	if (is_attachment()) {
+	if (apply_filters('sleek_404s', false)) {
 		status_header(404); # Sets 404 header
 		$wp_query->set_404(); # Shows 404 template
 	}
-}
+});

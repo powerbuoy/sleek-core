@@ -8,7 +8,7 @@
         }
     ],
     "autoload": {
-        "files": ["SleekCore.php"]
+        "files": ["sleek-core.php"]
     },
     "require": {}
 }
