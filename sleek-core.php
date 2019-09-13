@@ -1,5 +1,5 @@
 <?php
-namespace Sleek;
+namespace Sleek\Core;
 
 ######################
 # Charset and viewport
@@ -11,8 +11,8 @@ add_action('wp_head', function () {
 ###############
 # Theme support
 add_theme_support('title-tag');
-add_theme_support('post-thumbnails');
 add_theme_support('custom-logo');
+add_theme_support('post-thumbnails');
 
 ###################
 # Disable Gutenberg
