@@ -23,12 +23,17 @@ add_filter('use_block_editor_for_post_type', '__return_false', 10);
 ################
 # Include CSS/JS
 add_action('wp_enqueue_scripts', function () {
-	# CSS
+	# Include jQuery from CDN
+	wp_deregister_script('jquery');
+	wp_register_script('jquery', '//code.jquery.com/jquery-' . apply_filters('sleek_jquery_version', '3.4.1') . '.min.js', [], null, false);
+	wp_enqueue_script('jquery');
+
+	# Include CSS
 	if (file_exists(get_stylesheet_directory() . '/dist/main.css')) {
 		wp_register_style('sleek', get_stylesheet_directory_uri() . '/dist/main.css', [], filemtime(get_stylesheet_directory() . '/dist/main.css'));
 		wp_enqueue_style('sleek');
 	}
-	# JS
+	# Include JS
 	if (file_exists(get_stylesheet_directory() . '/dist/main.js')) {
 		wp_register_script('sleek', get_stylesheet_directory_uri() . '/dist/main.js', ['jquery'], filemtime(get_stylesheet_directory() . '/dist/main.js'), true);
 		wp_enqueue_script('sleek');
