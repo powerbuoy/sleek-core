@@ -1,13 +1,6 @@
 <?php
 namespace Sleek\Core;
 
-######################
-# Charset and viewport
-add_action('wp_head', function () {
-	echo '<meta charset="' . get_bloginfo('charset') . '">';
-	echo '<meta name="viewport" content="' . apply_filters('sleek_meta_viewport', 'width=device-width, initial-scale=1.0') . '">';
-}, 0);
-
 ###############
 # Theme support
 add_theme_support('html5');
@@ -16,17 +9,40 @@ add_theme_support('custom-logo');
 add_theme_support('post-thumbnails');
 add_theme_support('automatic-feed-links');
 
+# Ours
+add_theme_support('sleek-mobile-viewport');
+add_theme_support('sleek-classic-editor');
+add_theme_support('sleek-jquery-cdn');
+add_theme_support('sleek-disable-404-guessing');
+add_theme_support('sleek-nice-email-from');
+add_theme_support('sleek-archive-filter');
+add_theme_support('sleek-comment-form-placeholders');
+
+######################
+# Charset and viewport
+add_action('wp_head', function () {
+	echo '<meta charset="' . get_bloginfo('charset') . '">';
+
+	if (get_theme_support('sleek-mobile-viewport')) {
+		echo '<meta name="viewport" content="' . apply_filters('sleek_meta_viewport', 'width=device-width, initial-scale=1.0') . '">';
+	}
+}, 0);
+
 ###################
 # Disable Gutenberg
-add_filter('use_block_editor_for_post_type', '__return_false', 10);
+if (get_theme_support('sleek-classic-editor')) {
+	add_filter('use_block_editor_for_post_type', '__return_false', 10);
+}
 
 ################
 # Include CSS/JS
 add_action('wp_enqueue_scripts', function () {
 	# Include jQuery from CDN
-	wp_deregister_script('jquery');
-	wp_register_script('jquery', '//code.jquery.com/jquery-' . apply_filters('sleek_jquery_version', '3.4.1') . '.min.js', [], null, false);
-	wp_enqueue_script('jquery');
+	if (get_theme_support('sleek-jquery-cdn')) {
+		wp_deregister_script('jquery');
+		wp_register_script('jquery', '//code.jquery.com/jquery-' . apply_filters('sleek_jquery_version', '3.4.1') . '.min.js', [], null, false);
+		wp_enqueue_script('jquery');
+	}
 
 	$jsFile = apply_filters('sleek_js_file', 'main.js');
 	$cssFile = apply_filters('sleek_css_file', 'main.js');
@@ -79,13 +95,15 @@ add_editor_style();
 
 #####################
 # Change email sender
-add_filter('wp_mail_from', function () {
-	return get_option('admin_email');
-});
+if (get_theme_support('sleek-nice-email-from')) {
+	add_filter('wp_mail_from', function () {
+		return get_option('admin_email');
+	});
 
-add_filter('wp_mail_from_name', function () {
-	return get_bloginfo('name');
-});
+	add_filter('wp_mail_from_name', function () {
+		return get_bloginfo('name');
+	});
+}
 
 #############################################
 # Add a no-js class to body and remove onload
@@ -102,13 +120,15 @@ add_action('wp_head', function () {
 ##########################
 # Disable 404 URL guessing
 # https://core.trac.wordpress.org/ticket/16557
-add_filter('redirect_canonical', function ($url) {
-	if (is_404() and !isset($_GET['p'])) {
-		return false;
-	}
+if (get_theme_support('sleek-disable-404-guessing')) {
+	add_filter('redirect_canonical', function ($url) {
+		if (is_404() and !isset($_GET['p'])) {
+			return false;
+		}
 
-	return $url;
-});
+		return $url;
+	});
+}
 
 ##############################
 # 404 some pages or post-types
