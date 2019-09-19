@@ -46,8 +46,8 @@ add_action('wp_enqueue_scripts', function () {
 		wp_enqueue_script('jquery');
 	}
 
+	$cssFile = apply_filters('sleek_css_file', 'main.css');
 	$jsFile = apply_filters('sleek_js_file', 'main.js');
-	$cssFile = apply_filters('sleek_css_file', 'main.js');
 
 	# Include CSS
 	if (file_exists(get_stylesheet_directory() . '/dist/' . $cssFile)) {
