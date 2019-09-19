@@ -28,14 +28,17 @@ add_action('wp_enqueue_scripts', function () {
 	wp_register_script('jquery', '//code.jquery.com/jquery-' . apply_filters('sleek_jquery_version', '3.4.1') . '.min.js', [], null, false);
 	wp_enqueue_script('jquery');
 
+	$jsFile = apply_filters('sleek_js_file', 'main.js');
+	$cssFile = apply_filters('sleek_css_file', 'main.js');
+
 	# Include CSS
-	if (file_exists(get_stylesheet_directory() . '/dist/main.css')) {
-		wp_register_style('sleek', get_stylesheet_directory_uri() . '/dist/main.css', [], filemtime(get_stylesheet_directory() . '/dist/main.css'));
+	if (file_exists(get_stylesheet_directory() . '/dist/' . $cssFile)) {
+		wp_register_style('sleek', get_stylesheet_directory_uri() . '/dist/' . $cssFile, [], filemtime(get_stylesheet_directory() . '/dist/' . $cssFile));
 		wp_enqueue_style('sleek');
 	}
 	# Include JS
-	if (file_exists(get_stylesheet_directory() . '/dist/main.js')) {
-		wp_register_script('sleek', get_stylesheet_directory_uri() . '/dist/main.js', ['jquery'], filemtime(get_stylesheet_directory() . '/dist/main.js'), true);
+	if (file_exists(get_stylesheet_directory() . '/dist/' . $jsFile)) {
+		wp_register_script('sleek', get_stylesheet_directory_uri() . '/dist/' . $jsFile, ['jquery'], filemtime(get_stylesheet_directory() . '/dist/' . $jsFile), true);
 		wp_enqueue_script('sleek');
 	}
 });
