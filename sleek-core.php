@@ -41,6 +41,7 @@ if (get_theme_support('sleek-classic-editor')) {
 
 ################
 # Include CSS/JS
+# TODO: Is this action needed?
 add_action('wp_enqueue_scripts', function () {
 	# Include jQuery from CDN
 	if (get_theme_support('sleek-jquery-cdn')) {
@@ -54,13 +55,11 @@ add_action('wp_enqueue_scripts', function () {
 
 	# Include CSS
 	if (file_exists(get_stylesheet_directory() . '/dist/' . $cssFile)) {
-		wp_register_style('sleek', get_stylesheet_directory_uri() . '/dist/' . $cssFile, [], filemtime(get_stylesheet_directory() . '/dist/' . $cssFile));
-		wp_enqueue_style('sleek');
+		wp_enqueue_style('sleek', get_stylesheet_directory_uri() . '/dist/' . $cssFile, [], filemtime(get_stylesheet_directory() . '/dist/' . $cssFile));
 	}
 	# Include JS
 	if (file_exists(get_stylesheet_directory() . '/dist/' . $jsFile)) {
-		wp_register_script('sleek', get_stylesheet_directory_uri() . '/dist/' . $jsFile, ['jquery'], filemtime(get_stylesheet_directory() . '/dist/' . $jsFile), true);
-		wp_enqueue_script('sleek');
+		wp_enqueue_script('sleek', get_stylesheet_directory_uri() . '/dist/' . $jsFile, ['jquery'], filemtime(get_stylesheet_directory() . '/dist/' . $jsFile), true);
 	}
 });
 
@@ -80,6 +79,7 @@ add_action('edit_form_after_title', function ($post) {
 
 #####################
 # Give pages excerpts
+# TODO: Is this action needed?
 add_action('init', function () {
 	add_post_type_support('page', 'excerpt');
 });
@@ -137,6 +137,7 @@ if (get_theme_support('sleek-disable-404-guessing')) {
 
 ##############################
 # 404 some pages or post-types
+# TODO: Use has_single=false instead
 add_filter('template_redirect', function () {
 	global $wp_query;
 
