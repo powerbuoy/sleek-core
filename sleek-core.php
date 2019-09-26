@@ -9,20 +9,6 @@ add_theme_support('custom-logo');
 add_theme_support('post-thumbnails');
 add_theme_support('automatic-feed-links');
 
-# Ours
-add_theme_support('sleek-mobile-viewport');
-add_theme_support('sleek-classic-editor');
-add_theme_support('sleek-jquery-cdn');
-add_theme_support('sleek-disable-404-guessing');
-add_theme_support('sleek-nice-email-from');
-add_theme_support('sleek-comment-form-placeholders');
-add_theme_support('sleek-tinymce-clean-paste');
-add_theme_support('sleek-tinymce-no-colors');
-
-# Disabled by default but here for reference
-# add_theme_support('sleek-archive-filter');
-# add_theme_support('sleek-get-terms-post-type-arg')
-
 ######################
 # Charset and viewport
 add_action('wp_head', function () {
