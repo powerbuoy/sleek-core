@@ -7,16 +7,12 @@ add_theme_support('html5');
 add_theme_support('title-tag');
 add_theme_support('custom-logo');
 add_theme_support('post-thumbnails');
-add_theme_support('automatic-feed-links');
 
 ######################
 # Charset and viewport
 add_action('wp_head', function () {
 	echo '<meta charset="' . get_bloginfo('charset') . '">';
-
-	if (get_theme_support('sleek-mobile-viewport')) {
-		echo '<meta name="viewport" content="' . apply_filters('sleek_meta_viewport', 'width=device-width, initial-scale=1.0') . '">';
-	}
+	echo '<meta name="viewport" content="' . apply_filters('sleek_meta_viewport', 'width=device-width, initial-scale=1.0') . '">';
 }, 0);
 
 ###################
@@ -123,7 +119,7 @@ if (get_theme_support('sleek-disable-404-guessing')) {
 
 ##############################
 # 404 some pages or post-types
-# TODO: Use has_single=false instead
+# add_filter('sleek_404s', function () {return is_term('some-secret-term')});
 add_filter('template_redirect', function () {
 	global $wp_query;
 
