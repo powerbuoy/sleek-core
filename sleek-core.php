@@ -45,10 +45,6 @@ add_action('wp_enqueue_scripts', function () {
 	}
 });
 
-########################
-# Set up for translation
-load_theme_textdomain('sleek', get_template_directory() . '/languages');
-
 ##################################
 # Show the editor on the blog page
 # NOTE: With gutenberg enabled this will still show the classic editor...
