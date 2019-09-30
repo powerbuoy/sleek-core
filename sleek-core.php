@@ -23,7 +23,6 @@ if (get_theme_support('sleek-classic-editor')) {
 
 ################
 # Include CSS/JS
-# TODO: Is this action needed?
 add_action('wp_enqueue_scripts', function () {
 	# Include jQuery from CDN
 	if (get_theme_support('sleek-jquery-cdn')) {
@@ -43,7 +42,7 @@ add_action('wp_enqueue_scripts', function () {
 	if (file_exists(get_stylesheet_directory() . '/dist/' . $jsFile)) {
 		wp_enqueue_script('sleek', get_stylesheet_directory_uri() . '/dist/' . $jsFile, ['jquery'], filemtime(get_stylesheet_directory() . '/dist/' . $jsFile), true);
 	}
-});
+}, 99);
 
 ##################################
 # Show the editor on the blog page
