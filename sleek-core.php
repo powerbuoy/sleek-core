@@ -1,12 +1,77 @@
 <?php
 namespace Sleek\Core;
 
-###############
-# Theme support
-add_theme_support('html5');
-add_theme_support('title-tag');
-add_theme_support('custom-logo');
-add_theme_support('post-thumbnails');
+add_action('after_setup_theme', function () {
+	###############
+	# Theme support
+	add_theme_support('html5');
+	add_theme_support('title-tag');
+	add_theme_support('custom-logo');
+	add_theme_support('post-thumbnails');
+
+	##############
+	# Editor style
+	add_editor_style();
+
+	###################
+	# Disable Gutenberg
+	if (get_theme_support('sleek-classic-editor')) {
+		add_filter('use_block_editor_for_post_type', '__return_false', 10);
+	}
+
+	#####################
+	# Change email sender
+	if (get_theme_support('sleek-nice-email-from')) {
+		add_filter('wp_mail_from', function () {
+			return get_option('admin_email');
+		});
+
+		add_filter('wp_mail_from_name', function () {
+			return get_bloginfo('name');
+		});
+	}
+
+	##########################
+	# Disable 404 URL guessing
+	# https://core.trac.wordpress.org/ticket/16557
+	if (get_theme_support('sleek-disable-404-guessing')) {
+		add_filter('redirect_canonical', function ($url) {
+			if (is_404() and !isset($_GET['p'])) {
+				return false;
+			}
+
+			return $url;
+		});
+	}
+
+	###########################################
+	# Adds support post_type arg in get_terms()
+	# https://www.dfactory.eu/get_terms-post-type/
+	if (get_theme_support('sleek-get-terms-post-type-arg')) {
+		add_filter('terms_clauses', function ($clauses, $taxonomy, $args) {
+			if (!empty($args['post_type']))	{
+				global $wpdb;
+
+				$post_types = [];
+
+				if (isset($args['post_type']) and is_array($args['post_type'])) {
+					foreach ($args['post_type'] as $cpt)	{
+						$post_types[] = "'" . $cpt . "'";
+					}
+				}
+
+				if (!empty($post_types))	{
+					$clauses['fields'] = 'DISTINCT ' . str_replace('tt.*', 'tt.term_taxonomy_id, tt.term_id, tt.taxonomy, tt.description, tt.parent', $clauses['fields']) . ', COUNT(t.term_id) AS count';
+					$clauses['join'] .= ' INNER JOIN ' . $wpdb->term_relationships . ' AS r ON r.term_taxonomy_id = tt.term_taxonomy_id INNER JOIN ' . $wpdb->posts . ' AS p ON p.ID = r.object_id';
+					$clauses['where'] .= ' AND p.post_type IN (' . implode(',', $post_types) . ')';
+					$clauses['orderby'] = 'GROUP BY t.term_id ' . $clauses['orderby'];
+				}
+			}
+
+			return $clauses;
+		}, 10, 3);
+	}
+});
 
 ######################
 # Charset and viewport
@@ -14,12 +79,6 @@ add_action('wp_head', function () {
 	echo '<meta charset="' . get_bloginfo('charset') . '">';
 	echo '<meta name="viewport" content="' . apply_filters('sleek_meta_viewport', 'width=device-width, initial-scale=1.0') . '">';
 }, 0);
-
-###################
-# Disable Gutenberg
-if (get_theme_support('sleek-classic-editor')) {
-	add_filter('use_block_editor_for_post_type', '__return_false', 10);
-}
 
 ################
 # Include CSS/JS
@@ -71,22 +130,6 @@ add_filter('excerpt_more', function () {
 	return ' /../';
 });
 
-##############
-# Editor style
-add_editor_style();
-
-#####################
-# Change email sender
-if (get_theme_support('sleek-nice-email-from')) {
-	add_filter('wp_mail_from', function () {
-		return get_option('admin_email');
-	});
-
-	add_filter('wp_mail_from_name', function () {
-		return get_bloginfo('name');
-	});
-}
-
 #############################################
 # Add a no-js class to body and remove onload
 add_filter('body_class', function ($classes) {
@@ -98,19 +141,6 @@ add_filter('body_class', function ($classes) {
 add_action('wp_head', function () {
 	echo "<script>document.documentElement.classList.replace('no-js', 'js');</script>";
 });
-
-##########################
-# Disable 404 URL guessing
-# https://core.trac.wordpress.org/ticket/16557
-if (get_theme_support('sleek-disable-404-guessing')) {
-	add_filter('redirect_canonical', function ($url) {
-		if (is_404() and !isset($_GET['p'])) {
-			return false;
-		}
-
-		return $url;
-	});
-}
 
 ##############################
 # 404 some pages or post-types
