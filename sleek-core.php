@@ -106,6 +106,7 @@ add_action('wp_enqueue_scripts', function () {
 ##################################
 # Show the editor on the blog page
 # NOTE: With gutenberg enabled this will still show the classic editor...
+# TODO: Maybe should check sleek-classic-editor theme support?
 # https://wordpress.stackexchange.com/questions/193755/show-default-editor-on-blog-page-administration-panel
 add_action('edit_form_after_title', function ($post) {
 	if ($post->ID === get_option('page_for_posts')) {
@@ -145,6 +146,7 @@ add_action('wp_head', function () {
 ##############################
 # 404 some pages or post-types
 # add_filter('sleek_404s', function () {return is_term('some-secret-term')});
+# TODO: Deprecate(?)
 add_filter('template_redirect', function () {
 	global $wp_query;
 
