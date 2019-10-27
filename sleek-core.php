@@ -1,14 +1,15 @@
 <?php
 namespace Sleek\Core;
 
-add_action('after_setup_theme', function () {
-	###############
-	# Theme support
-	add_theme_support('html5');
-	add_theme_support('title-tag');
-	add_theme_support('custom-logo');
-	add_theme_support('post-thumbnails');
+###############
+# Theme support
+# NOTE: Run these outside after_setup_theme so they can be changed from the theme's functions.php
+add_theme_support('html5');
+add_theme_support('title-tag');
+add_theme_support('custom-logo');
+add_theme_support('post-thumbnails');
 
+add_action('after_setup_theme', function () {
 	##############
 	# Editor style
 	add_editor_style();
@@ -84,19 +85,41 @@ add_action('wp_head', function () {
 # Import CSS/JS
 add_action('wp_enqueue_scripts', function () {
 	# Import jQuery from CDN
-	if (get_theme_support('sleek-jquery-cdn')) {
+	if (!get_theme_support('sleek-disable-jquery') and get_theme_support('sleek-jquery-cdn')) {
 		wp_deregister_script('jquery');
-		wp_register_script('jquery', '//code.jquery.com/jquery-' . apply_filters('sleek_jquery_version', '3.4.1') . '.min.js', [], null, false);
+		wp_register_script(
+			'jquery',
+			'//code.jquery.com/jquery-' . apply_filters('sleek_jquery_version', '3.4.1') . '.min.js',
+			[], null, false
+		);
 		wp_enqueue_script('jquery');
+	}
+
+	# Remove jQuery entirely
+	if (get_theme_support('sleek-disable-jquery')) {
+		wp_dequeue_script('jquery');
+		wp_deregister_script('jquery');
 	}
 
 	# Import CSS
 	if (file_exists(get_stylesheet_directory() . '/dist/app.css')) {
-		wp_enqueue_style('sleek', get_stylesheet_directory_uri() . '/dist/app.css', [], filemtime(get_stylesheet_directory() . '/dist/app.css'));
+		wp_enqueue_style(
+			'sleek',
+			get_stylesheet_directory_uri() . '/dist/app.css',
+			[],
+			filemtime(get_stylesheet_directory() . '/dist/app.css')
+		);
 	}
+
 	# Import JS
 	if (file_exists(get_stylesheet_directory() . '/dist/app.js')) {
-		wp_enqueue_script('sleek', get_stylesheet_directory_uri() . '/dist/app.js', ['jquery'], filemtime(get_stylesheet_directory() . '/dist/app.js'), true);
+		wp_enqueue_script(
+			'sleek',
+			get_stylesheet_directory_uri() . '/dist/app.js',
+			(get_theme_support('sleek-disable-jquery') ? [] : ['jquery']),
+			filemtime(get_stylesheet_directory() . '/dist/app.js'),
+			true
+		);
 	}
 }, 99);
 
