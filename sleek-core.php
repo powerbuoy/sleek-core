@@ -1,15 +1,14 @@
 <?php
 namespace Sleek\Core;
 
-###############
-# Theme support
-# NOTE: Run these outside after_setup_theme so they can be changed from the theme's functions.php
-add_theme_support('html5');
-add_theme_support('title-tag');
-add_theme_support('custom-logo');
-add_theme_support('post-thumbnails');
-
 add_action('after_setup_theme', function () {
+	###############
+	# Theme support
+	add_theme_support('html5');
+	add_theme_support('title-tag');
+	add_theme_support('custom-logo');
+	add_theme_support('post-thumbnails');
+
 	##############
 	# Editor style
 	add_editor_style();
