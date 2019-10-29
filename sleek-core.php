@@ -76,8 +76,19 @@ add_action('after_setup_theme', function () {
 ######################
 # Charset and viewport
 add_action('wp_head', function () {
-	echo '<meta charset="' . get_bloginfo('charset') . '">';
-	echo '<meta name="viewport" content="' . apply_filters('sleek_meta_viewport', 'width=device-width, initial-scale=1.0') . '">';
+	?>
+	<meta charset="<?php echo get_bloginfo('charset') ?>">
+	<meta name="viewport" content="<?php echo apply_filters('sleek_meta_viewport', 'width=device-width, initial-scale=1.0') ?>">
+	<?php
+}, 0);
+
+add_action('wp_footer', function () {
+	?>
+	<script>
+		SLEEK_STYLESHEET_DIRECTORY_URI = "<?php echo get_stylesheet_directory_uri() ?>";
+		SLEEK_AJAX_URL = "<?php echo admin_url('admin-ajax.php') ?>";
+	</script>
+	<?php
 }, 0);
 
 ###############
