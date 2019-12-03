@@ -13,6 +13,12 @@ add_action('after_setup_theme', function () {
 	# Editor style
 	add_editor_style();
 
+	######################
+	# Disable theme editor
+	if (get_theme_support('sleek-disable-theme-editor')) {
+		define('DISALLOW_FILE_EDIT', true);
+	}
+
 	###################
 	# Disable Gutenberg
 	if (get_theme_support('sleek-classic-editor')) {
