@@ -15,7 +15,7 @@ add_action('after_setup_theme', function () {
 
 	######################
 	# Disable theme editor
-	if (get_theme_support('sleek-disable-theme-editor')) {
+	if (get_theme_support('sleek-disable-theme-editor') and !defined('DISALLOW_FILE_EDIT')) {
 		define('DISALLOW_FILE_EDIT', true);
 	}
 
