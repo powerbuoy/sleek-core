@@ -1,4 +1,10 @@
-# Sleek Core
+# [Sleek Core](https://github.com/powerbuoy/sleek-core/)
+
+[![Packagist](https://img.shields.io/packagist/vpre/powerbuoy/sleek-core.svg?style=flat-square)](https://packagist.org/packages/powerbuoy/sleek-core)
+[![GitHub license](https://img.shields.io/github/license/powerbuoy/sleek-core.svg?style=flat-square)](https://github.com/powerbuoy/sleek-core/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/powerbuoy/sleek-core.svg?style=flat-square)](https://github.com/powerbuoy/sleek-core/issues)
+[![GitHub forks](https://img.shields.io/github/forks/powerbuoy/sleek-core.svg?style=flat-square)](https://github.com/powerbuoy/sleek-core/network)
+[![GitHub stars](https://img.shields.io/github/stars/powerbuoy/sleek-core.svg?style=flat-square)](https://github.com/powerbuoy/sleek-core/stargazers)
 
 Adds a bunch of theme support, includes translation files, enqueues scripts etc etc.
 
