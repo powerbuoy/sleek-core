@@ -15,8 +15,8 @@ add_action('wp_enqueue_scripts', function () {
 		wp_enqueue_script('jquery');
 	}
 
-	# Remove jQuery entirely
-	if (get_theme_support('sleek/disable_jquery')) {
+	# Remove jQuery entirely (unless user is logged in (to support for example Query Monitor))
+	if (get_theme_support('sleek/disable_jquery') and !is_user_logged_in()) {
 		wp_dequeue_script('jquery');
 		wp_deregister_script('jquery');
 	}
