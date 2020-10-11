@@ -69,17 +69,6 @@ add_action('wp_head', function () {
 	<?php
 }, 0); # NOTE: Render first thing in <head>
 
-##################################
-# Show the editor on the blog page
-# NOTE: With gutenberg enabled this will still show the classic editor...
-# TODO: Maybe should check sleek/classic_editor theme support?
-# https://wordpress.stackexchange.com/questions/193755/show-default-editor-on-blog-page-administration-panel
-add_action('edit_form_after_title', function ($post) {
-	if ($post->ID === get_option('page_for_posts')) {
-		add_post_type_support('page', 'editor');
-	}
-}, 0);
-
 #####################
 # Give pages excerpts
 add_post_type_support('page', 'excerpt');
