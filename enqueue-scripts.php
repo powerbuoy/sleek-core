@@ -5,20 +5,19 @@ namespace Sleek\Core;
 # Import CSS/JS
 add_action('wp_enqueue_scripts', function () {
 	# Import jQuery from CDN
-	if (!get_theme_support('sleek/disable_jquery') and get_theme_support('sleek/jquery_cdn')) {
+	if (get_theme_support('sleek/jquery_cdn')) {
 		wp_deregister_script('jquery');
 		wp_register_script(
 			'jquery',
-			'//code.jquery.com/jquery-' . apply_filters('sleek/jquery_version', '3.4.1') . '.min.js',
+			'//code.jquery.com/jquery-' . apply_filters('sleek/jquery_version', '3.5.1') . '.min.js',
 			[], null, false
 		);
-		wp_enqueue_script('jquery');
 	}
 
 	# Remove jQuery entirely (unless user is logged in (to support for example Query Monitor))
+	# NOTE: Only dequeue jQuery. If another script requires it it will still be included
 	if (get_theme_support('sleek/disable_jquery') and !is_user_logged_in()) {
 		wp_dequeue_script('jquery');
-		# wp_deregister_script('jquery');
 	}
 
 	# Import CSS
