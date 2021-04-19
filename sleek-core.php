@@ -94,4 +94,4 @@ add_filter('body_class', function ($classes) {
 
 add_action('wp_head', function () {
 	echo "<script>document.documentElement.classList.replace('no-js', 'js');</script>";
-});
+}, 0);
