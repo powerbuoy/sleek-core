@@ -27,6 +27,9 @@ add_action('after_setup_theme', function () {
 	if (get_theme_support('sleek/classic_editor')) {
 		add_filter('use_block_editor_for_post_type', '__return_false', 10);
 
+		# Also disable block editor for widgets
+		remove_theme_support('widgets-block-editor');
+
 		# And remove its CSS (unless in admin)
 		if (!is_admin()) {
 			add_action('wp_enqueue_scripts', function () {
