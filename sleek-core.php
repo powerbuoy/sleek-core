@@ -7,7 +7,7 @@ require_once __DIR__ . '/get-terms-post-type-arg.php';
 add_action('after_setup_theme', function () {
 	###############
 	# Theme support
-	add_theme_support('html5');
+	add_theme_support('html5', ['comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script']);
 	add_theme_support('title-tag');
 	add_theme_support('custom-logo');
 	add_theme_support('post-thumbnails');
