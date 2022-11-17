@@ -34,6 +34,8 @@ add_action('after_setup_theme', function () {
 		if (!is_admin()) {
 			add_action('wp_enqueue_scripts', function () {
 				wp_dequeue_style('wp-block-library');
+				wp_dequeue_style('global-styles');
+				wp_dequeue_style('classic-theme-styles');
 			});
 		}
 	}
